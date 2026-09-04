@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>FilmoTokio</title>
+</head>
+<body>
+<h1>Bem-vindo ao FilmoTokio</h1>
+<p>A tua plataforma de filmes.</p>
+
+<div sec:authorize="isAuthenticated()">
+    Olá, <span sec:authentication="name">utilizador</span> |
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+        <button type="submit">Logout</button>
+    </form>
+</div>
+<div sec:authorize="!isAuthenticated()">
+    <a th:href="@{/login}">Login</a> | <a th:href="@{/registo}">Registar</a>
+</div>
+
+<hr/>
+<h2>Filmes</h2>
+<p th:if="${films.isEmpty()}">Ainda não há filmes registados.</p>
+<ul>
+    <li th:each="film : ${films}">
+        <a th:href="@{/film/{id}(id=${film.id})}" th:text="${film.title}">Título</a>
+        (<span th:text="${film.year}">Ano</span>) -
+        <span th:text="${film.duration} + ' min'">Duração</span><br/>
+        <span th:text="${film.sypnosis}">Sinopse</span><br/>
+        <span th:if="${film.director != null}">
+                Realizador: <span th:text="${film.director.name} + ' ' + ${film.director.surname}">Nome</span>
+            </span>
+    </li>
+</ul>
+</body>
+</html>

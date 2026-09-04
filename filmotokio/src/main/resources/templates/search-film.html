@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pesquisar Filme - FilmoTokio</title>
+</head>
+<body>
+<h1>Pesquisar Filme</h1>
+<form th:action="@{/searched-film}" method="get">
+    <label>Título: <input type="text" name="title"/></label>
+    <button type="submit">Pesquisar</button>
+</form>
+<a th:href="@{/}">Voltar</a>
+</body>
+</html>

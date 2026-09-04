@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados - FilmoTokio</title>
+</head>
+<body>
+<h1>Resultados para "<span th:text="${query}"></span>"</h1>
+<p th:if="${films.isEmpty()}">Nenhum filme encontrado.</p>
+<ul>
+    <li th:each="film : ${films}">
+        <a th:href="@{/film/{id}(id=${film.id})}" th:text="${film.title}">Título</a>
+        (<span th:text="${film.year}">Ano</span>) -
+        <span th:text="${film.duration} + ' min'">Duração</span><br/>
+        <span th:text="${film.sypnosis}">Sinopse</span><br/>
+        <span th:if="${film.director != null}">
+                Realizador: <span th:text="${film.director.name} + ' ' + ${film.director.surname}">Nome</span>
+            </span>
+    </li>
+</ul>
+<a th:href="@{/search-film}">Nova pesquisa</a> |
+<a th:href="@{/}">Voltar</a>
+</body>
+</html>

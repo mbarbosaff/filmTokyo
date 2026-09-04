@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova Pessoa - FilmoTokio</title>
+</head>
+<body>
+<h1>Nova Pessoa</h1>
+<form th:action="@{/new-person}" th:object="${person}" method="post">
+    <label>Nome: <input type="text" th:field="*{name}"/></label><br/>
+    <label>Apelido: <input type="text" th:field="*{surname}"/></label><br/>
+    <label>Tipo:
+        <select th:field="*{type}">
+            <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}"></option>
+        </select>
+    </label><br/>
+    <button type="submit">Guardar</button>
+</form>
+<a th:href="@{/}">Voltar</a>
+</body>
+</html>

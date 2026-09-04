@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${film.title}">Filme</title>
+</head>
+<body>
+<h1 th:text="${film.title}">Título</h1>
+<p th:text="${film.year} + ' - ' + ${film.duration} + ' min'"></p>
+<p th:text="${film.sypnosis}"></p>
+<p th:if="${film.director != null}">Realizador: <span th:text="${film.director.name} + ' ' + ${film.director.surname}"></span></p>
+<p th:if="${film.photographer != null}">Fotógrafo: <span th:text="${film.photographer.name} + ' ' + ${film.photographer.surname}"></span></p>
+<p>Pontuação média: <span th:text="${#numbers.formatDecimal(mediaScore, 1, 1)}"></span> / 5 (<span th:text="${film.scores.size()}"></span> votos)</p>
+
+<div sec:authorize="isAuthenticated()">
+    <h3>Dar a tua pontuação</h3>
+    <form th:action="@{/film/{id}/score(id=${film.id})}" method="post">
+        <select name="value">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <button type="submit">Votar</button>
+    </form>
+
+    <h3>Escrever review</h3>
+    <form th:action="@{/film/{id}/review(id=${film.id})}" method="post">
+        <label>Título: <input type="text" name="title"/></label><br/>
+        <label>Texto: <textarea name="textReview"></textarea></label><br/>
+        <button type="submit">Publicar</button>
+    </form>
+</div>
+<p sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Faz login</a> para pontuar ou escrever uma review.</p>
+
+<h3>Reviews</h3>
+<p th:if="${film.reviews.isEmpty()}">Ainda não há reviews.</p>
+<div th:each="review : ${film.reviews}">
+    <strong th:text="${review.title}"></strong>
+    (<span th:text="${review.user.username}"></span>, <span th:text="${review.date}"></span>)<br/>
+    <p th:text="${review.textReview}"></p>
+</div>
+
+<a th:href="@{/}">Voltar</a>
+</body>
+</html>
